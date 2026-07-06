@@ -24,10 +24,10 @@ class Clublosavengers(Club):
     def mostrar_actividades(self):
         print(self.actividades)
         
-madrid = Clublosavengers("isa", "lugar sucio", "abajo del puente (casa de martin)", "marino", 2024)
+madrid = Clublosavengers("Madrid", "lugar amplio de 200 personas", "Malaga, España", "Messi", 2024)
 
-madrid.registrar_socio("marina")
+madrid.registrar_socio("isaias")
 madrid.cantidad_socios()
-madrid.agregar_actividad("bailar la danza de la sabiduria ancestral y lluvia dietetica que le enseñaron los tios de martin a marino")
-madrid.agregar_actividad("comer como le enseño isa a gio el malageño uuaaa")
+madrid.agregar_actividad("bailar")
+madrid.agregar_actividad("beber")
 madrid.mostrar_actividades()
