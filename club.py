@@ -7,7 +7,7 @@ class Club:
         self.ubicacion = ubicacion
         
     def mostrar_info(self):
-        print("el nombre de mi club es ", self.nombre ,"y es un lugar ", self.descripcion, "nos ubicamos en ", self.ubicacion, " nuestro presidente es ", self.__presidente, "y nos fundamos el ", self.__fecha_fundacion)
+        print("el nombre de mi club es",self.nombre ,"y es un lugar",self.descripcion,"nos ubicamos en",self.ubicacion, " nuestro presidente es",self.__presidente, "y nos fundamos en",self.__fecha_fundacion)
         
     def get_presidente(self):
         return self.__presidente
@@ -21,5 +21,5 @@ class Club:
     def set_presidente(self, fecha_fundacion):
         self.__fecha_fundacion = fecha_fundacion
         
-club1 = Club("Alarios","chico de 50 personas max","villa maria, Cordoba", "Kevin Molinia", "1976" )
+club1 = Club("Madrid","chico, de 50 personas max","Malaga, España", "Ronaldo", 1998 )
 club1.mostrar_info()
