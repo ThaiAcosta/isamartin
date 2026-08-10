@@ -36,12 +36,12 @@ class Persona:
     def mostrar_anio_mayoria_edad(self):
         anio_actual = date.today().year
         anio_nacimiento = anio_actual - self.edad
-        anio_mayoria = anio_nacimiento + 18
+        anio_mayor = anio_nacimiento + 18
         
         if self.es_mayor_de_edad():
-            print(self.nombre_completo, "es mayor de edad desde el año", anio_mayoria)
+            print(self.nombre_completo, "es mayor de edad desde el año", anio_mayor)
         else:
-            print(self.nombre_completo, "cumplirá la mayoría de edad en el año", anio_mayoria)
+            print(self.nombre_completo, "cumplirá la mayoría de edad en el año", anio_mayor)
             
-persona1 = Persona("Juan Pérez", 25, "DNI", "12345678", "Argentina")
+persona1 = Persona("Juancito", 25, "DNI", "12345678", "Argentina")
 persona1.mostrar_anio_mayoria_edad()

@@ -30,6 +30,6 @@ class Socio:
             print("El socio", self.__usuario, "continúa ACTIVO. Días desde inscripción:", dias_transcurridos)
             
             
-fecha_antigua = date(2020, 5, 15)
-socio1 = Socio(fecha_antigua, "Activo", "carlos99", "clave123")
+fecha_antigua = date(2023, 5, 15)
+socio1 = Socio(fecha_antigua, "Activo", "el tio charly", "clave123")
 socio1.evaluar_suspension()
