@@ -12,7 +12,8 @@ class Clublosavengers(Club):
     def set_socios(self, __socios):
         self.__socios = __socios
     
-    def registrar_socio(self, socio):
+    def registrar_socio(self, nombre, activo = True):
+        socio = {"nombre" : nombre, "activo" : activo}
         self.__socios.append(socio)
     
     def cantidad_socios(self):
