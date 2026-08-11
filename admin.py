@@ -35,12 +35,20 @@ class Administrador(Socio):
         else:
             print("El socio", socio.get__usuario(), "ya se encuentra suspendido")
             
+    def verificar_acceso(self, usuario, contrasenia):
+        if usuario == self.get__usuario() and contrasenia == self.get__contrasenia():
+            print("Acceso correcto de admin.")
+            return True
+        else:
+            print("Usuario o contraseña incorrectos.")
+            return False
+    print("---------------------------------------------------------------------------------------------")  
+          
 socio1 = Socio(date(2023, 5, 15), "Activo", "el_tio_charly", "clave123")
 socio2 = Socio(date(2024, 1, 10), "Activo", "marina_trini", "clave456")
 
 admin1 = Administrador("Ana", "admin_ana", "adminpass", date(2020, 1, 1), "Activo")
-
+admin1.verificar_acceso("admin_ana", "adminpass")
 admin1.agregar_socio(socio1)
 admin1.agregar_socio(socio2)
-
 admin1.listar_socios()

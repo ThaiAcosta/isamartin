@@ -6,10 +6,8 @@ class Socio:
         self.estado = estado
         self.__usuario = usuario
         self.__contrasenia = contrasenia
-        if cuota:
-            self.cuotas = cuota
-        else:
-            self.cuotas = []
+        self.cuotas = []
+        self.clubes = []
     
     def get__usuario(self):
         return self.__usuario
@@ -23,6 +21,25 @@ class Socio:
     def set__contrasenia(self, __contrasenia_nueva):
         self.__contrasenia = __contrasenia_nueva
         
+    def asociar_club(self, club):
+        self.clubes.append(club)
+        
+    def mostrar_clubes(self):
+        print("Clubes del socio:", self.clubes)
+        
+    def eliminar_club(self, club):
+        self.clubes.remove(club)
+        print("se ha eliminado el club", club)
+        
+    def generar_cuota(self, numero, periodo):
+        cuota = {
+            "numero": numero,
+            "periodo": periodo,
+            "estado": "Pendiente"
+        }
+
+        self.cuotas.append(cuota)
+        
     def evaluar_suspension(self):
         fecha_actual = date.today()
         dias_transcurridos = (fecha_actual - self.fecha_incripcion).days
@@ -33,6 +50,29 @@ class Socio:
         else:
             print("El socio", self.__usuario, "continúa ACTIVO. Días desde inscripción:", dias_transcurridos)
             
+    def generar_cuota(self, numero, periodo):
+        cuota = {
+            "numero": numero,
+            "periodo": periodo,
+            "estado": "Pendiente"
+        }
+        self.cuotas.append(cuota)
+        
+    def pagar_cuota(self, numero):
+        for cuota in self.cuotas:
+            if cuota["numero"] == numero:
+                if cuota["estado"] == "Pendiente":
+                    cuota["estado"] = "Pagada"
+                    print("La cuota",numero, "fue pagada.")
+    
+    def tiene_deudas(self):
+        for cuota in self.cuotas:
+            if cuota["estado"] == "Pendiente":
+                print("El socio tiene cuotas sin abonar.")
+                return
+
+    print("El socio no tiene deudas.")
+        
     def mostrar_cuotas_pendientes(self):
         cantidad_pendientes = 0
         for cuota in self.cuotas:
@@ -45,20 +85,38 @@ class Socio:
         fecha_actual = date.today()
         for cuota in self.cuotas:
             if cuota.get("estado") == "Pendiente":
-                if fecha_actual > cuota.get("fecha_vencimiento"):  # NUEVO: uso de "fecha_vencimiento"
-                    print("La cuota número", cuota.get("numero"), "está VENCIDA.")
-                else:
-                    print("La cuota número", cuota.get("numero"), "todavía no venció.")
-            else:
-                print("La cuota número", cuota.get("numero"), "ya está pagada.")
+                if cuota.get("fecha_vencimiento") != None:
+                    if fecha_actual > cuota.get("fecha_vencimiento"):
+                        print("La cuota número", cuota.get("numero"), "está VENCIDA.")
+                    else:
+                        print("La cuota número", cuota.get("numero"), "todavía no venció.")
+        else:
+            print("La cuota número", cuota.get("numero"), "ya está pagada.")
+            
+    def verificar_acceso(self, usuario, contrasenia):
+        if usuario == self.__usuario and contrasenia == self.__contrasenia:
+            print("Acceso correcto.")
+            return True
+        else:
+            print("Usuario o contraseña incorrectos.")
+            return False
             
 fecha_antigua = date(2023, 5, 15)
 cuotas_socio1 = [
-    {"numero": 1, "estado": "Pagada"},
-    {"numero": 2, "estado": "Pendiente"},
-    {"numero": 3, "estado": "Pendiente"},
+    {"numero": 1, "estado": "Pagada", "fecha_vencimiento": date(2026, 7, 10)},
+    {"numero": 2, "estado": "Pendiente", "fecha_vencimiento": date(2026, 8, 10)},
 ]
 socio1 = Socio(fecha_antigua, "Activo", "tio charly", "clave123")
+socio1.asociar_club("Malaga")
+socio1.asociar_club("Madrid")
+socio1.mostrar_clubes()
+socio1.eliminar_club("Madrid")
+socio1.mostrar_clubes()
+socio1.generar_cuota(67, "Agosto")
+socio1.generar_cuota(76, "Septiembre")
+socio1.pagar_cuota(67)
+socio1.tiene_deudas()
 socio1.evaluar_suspension()
 socio1.mostrar_cuotas_pendientes()
 socio1.verificar_vencimiento_cuotas()
+socio1.verificar_acceso("tio charly", "clave123")

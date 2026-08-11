@@ -42,6 +42,15 @@ class Persona:
             print(self.nombre_completo, "es mayor de edad desde el año", anio_mayor)
         else:
             print(self.nombre_completo, "cumplirá la mayoría de edad en el año", anio_mayor)
+    
+    def verificar_identificacion(self):
+        if self.__identificacion != "":
+            print("La identificación es válida.")
+            return True
+        else:
+            print("La identificación está vacía.")
+            return False
             
 persona1 = Persona("Juancito", 25, "DNI", "12345678", "Argentina")
 persona1.mostrar_anio_donde_legalizo()
+persona1.verificar_identificacion()
