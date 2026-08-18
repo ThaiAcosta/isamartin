@@ -31,14 +31,6 @@ class Socio:
         self.clubes.remove(club)
         print("se ha eliminado el club", club)
         
-    def generar_cuota(self, numero, periodo):
-        cuota = {
-            "numero": numero,
-            "periodo": periodo,
-            "estado": "Pendiente"
-        }
-
-        self.cuotas.append(cuota)
         
     def evaluar_suspension(self):
         fecha_actual = date.today()
@@ -50,11 +42,19 @@ class Socio:
         else:
             print("El socio", self.__usuario, "continúa ACTIVO. Días desde inscripción:", dias_transcurridos)
             
-    def generar_cuota(self, numero, periodo):
+    def reactivar_socio(self):
+        if self.estado == "Suspendido":
+            self.estado = "Activo"
+            print("El socio", self.__usuario, "ha sido reactivado.")
+        else:
+            print("El socio no está suspendido.")
+            
+    def generar_cuota(self, numero, periodo, fecha_vencimiento):
         cuota = {
             "numero": numero,
             "periodo": periodo,
-            "estado": "Pendiente"
+            "estado": "Pendiente",
+            "fecha_vencimiento": fecha_vencimiento
         }
         self.cuotas.append(cuota)
         
@@ -69,9 +69,10 @@ class Socio:
         for cuota in self.cuotas:
             if cuota["estado"] == "Pendiente":
                 print("El socio tiene cuotas sin abonar.")
-                return
+                return True
 
-    print("El socio no tiene deudas.")
+        print("El socio no tiene deudas.")
+        return False
         
     def mostrar_cuotas_pendientes(self):
         cantidad_pendientes = 0
@@ -83,6 +84,7 @@ class Socio:
     
     def verificar_vencimiento_cuotas(self):
         fecha_actual = date.today()
+        
         for cuota in self.cuotas:
             if cuota.get("estado") == "Pendiente":
                 if cuota.get("fecha_vencimiento") != None:
@@ -90,8 +92,8 @@ class Socio:
                         print("La cuota número", cuota.get("numero"), "está VENCIDA.")
                     else:
                         print("La cuota número", cuota.get("numero"), "todavía no venció.")
-        else:
-            print("La cuota número", cuota.get("numero"), "ya está pagada.")
+            else:
+                print("La cuota número", cuota.get("numero"), "ya está pagada.")
             
     def verificar_acceso(self, usuario, contrasenia):
         if usuario == self.__usuario and contrasenia == self.__contrasenia:
@@ -102,21 +104,19 @@ class Socio:
             return False
             
 fecha_antigua = date(2023, 5, 15)
-cuotas_socio1 = [
-    {"numero": 1, "estado": "Pagada", "fecha_vencimiento": date(2026, 7, 10)},
-    {"numero": 2, "estado": "Pendiente", "fecha_vencimiento": date(2026, 8, 10)},
-]
+
 socio1 = Socio(fecha_antigua, "Activo", "tio charly", "clave123")
 socio1.asociar_club("Malaga")
 socio1.asociar_club("Madrid")
 socio1.mostrar_clubes()
 socio1.eliminar_club("Madrid")
 socio1.mostrar_clubes()
-socio1.generar_cuota(67, "Agosto")
-socio1.generar_cuota(76, "Septiembre")
+socio1.generar_cuota(67, "Agosto", date(2026, 8, 10))
+socio1.generar_cuota(76, "Septiembre", date(2026, 9, 10))
 socio1.pagar_cuota(67)
 socio1.tiene_deudas()
 socio1.evaluar_suspension()
 socio1.mostrar_cuotas_pendientes()
 socio1.verificar_vencimiento_cuotas()
 socio1.verificar_acceso("tio charly", "clave123")
+socio1.reactivar_socio()
