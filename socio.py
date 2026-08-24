@@ -30,8 +30,7 @@ class Socio:
     def eliminar_club(self, club):
         self.clubes.remove(club)
         print("se ha eliminado el club", club)
-        
-        
+         
     def evaluar_suspension(self):
         fecha_actual = date.today()
         dias_transcurridos = (fecha_actual - self.fecha_incripcion).days
@@ -84,7 +83,6 @@ class Socio:
     
     def verificar_vencimiento_cuotas(self):
         fecha_actual = date.today()
-        
         for cuota in self.cuotas:
             if cuota.get("estado") == "Pendiente":
                 if cuota.get("fecha_vencimiento") != None:

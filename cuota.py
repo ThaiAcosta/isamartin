@@ -52,6 +52,6 @@ class Cuota:
 cuota1 = Cuota("Pendiente", date(2026, 8, 10), "agosto")
 cuota1.registrar_cuota_pagada()
 cuota1.verificar_vencimiento()
-cuota1.actualizar_estado()
 cuota1.dias_para_vencimiento()
 cuota1.renovar_cuota("septiembre", date(2026, 9, 10))
+cuota1.actualizar_estado()

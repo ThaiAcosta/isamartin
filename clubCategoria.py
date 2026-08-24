@@ -21,7 +21,7 @@ class Clublosavengers(Club):
         for socio in self.__socios:
             if socio["nombre"] == nombre:
                 self.__socios.remove(socio)
-                print("Socio eliminado")
+                print("Socio", nombre ,"eliminado")
                 
     def buscar_socio(self, nombre):
         for socio in self.__socios:
