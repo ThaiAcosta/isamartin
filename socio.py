@@ -1,11 +1,12 @@
 from datetime import date
 
 class Socio:
-    def __init__(self, fecha_incripcion, estado, usuario, contrasenia ):
+    def __init__(self, fecha_incripcion, estado, usuario, contrasenia, nombre):
         self.fecha_incripcion = fecha_incripcion
         self.estado = estado
         self.__usuario = usuario
         self.__contrasenia = contrasenia
+        self.nombre = nombre
         self.cuotas = []
         self.clubes = []
     

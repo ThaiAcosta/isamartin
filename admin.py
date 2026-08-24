@@ -3,17 +3,17 @@ from datetime import date
 
 
 class Administrador(Socio):
-    def __init__(self, nombre, usuario, contrasenia, fecha_incripcion, estado):
+    def __init__(self, nombre, usuario, contrasenia, fecha_incripcion, estado, categoria):
         super().__init__(fecha_incripcion, estado, usuario, contrasenia)
         self.nombre = nombre
-        self.socios = []  # lista de socios del club
+        self.categoria = categoria
 
     def agregar_socio(self, socio):
-        self.socios.append(socio)
+        self.categoria.registrar_socio(socio)
         print("Socio", socio.get__usuario(), "agregado al club")
 
     def listar_socios(self):
-        if not self.socios:
+        if not self.categoria.get_socios():
             print("No hay socios registrados en el club")
             return
 

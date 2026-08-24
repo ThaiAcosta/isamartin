@@ -14,18 +14,11 @@ class Persona:
     def set_socios(self, __tipo_identificacion):
         self.__tipo_identificacion = __tipo_identificacion
         
-        
     def get_identificacion(self):
         return self.__identificacion
-    
-    def set_socios(self, __identificacion):
-        self.__identificacion = __identificacion
         
     def get_nacionalidad(self):
         return self.__nacionalidad
-    
-    def set_socios(self, __nacionalidad):
-        self.__nacionalidad = __nacionalidad
         
     def es_mayor_de_edad(self):
         if self.edad >= 18:

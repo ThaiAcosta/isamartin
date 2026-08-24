@@ -1,6 +1,6 @@
 from club import Club
 
-class Clublosavengers(Club):
+class ClubCategoria(Club):
     def __init__(self, nombre, descripcion, ubicacion, presidente, fecha_fundacion):
         super().__init__(nombre, descripcion, ubicacion, presidente, fecha_fundacion)
         self.__socios = []
@@ -16,16 +16,18 @@ class Clublosavengers(Club):
     def registrar_socio(self, nombre, activo = True):
         socio = {"nombre" : nombre, "activo" : activo}
         self.__socios.append(socio)
-        
+                
     def eliminar_socio(self, nombre):
         for socio in self.__socios:
-            if socio["nombre"] == nombre:
+            if socio.nombre == nombre:
                 self.__socios.remove(socio)
-                print("Socio", nombre ,"eliminado")
+                print("Socio", nombre, "eliminado")
+                return
+        print("Socio", nombre, "no encontrado en la lista")
                 
     def buscar_socio(self, nombre):
         for socio in self.__socios:
-            if socio["nombre"] == nombre:
+            if socio.nombre == nombre:
                 print("Socio encontrado:", socio["nombre"])
     
     def cantidad_socios(self):
@@ -42,17 +44,20 @@ class Clublosavengers(Club):
         print("se ha eliminado la actividad ", actividad)
         
     def porcentaje_activos(self):
+        if len(self.__socios) == 0:
+            print("No hay socios registrados para calcular el porcentaje")
+            return
         activos = 0
-
+        
         for socio in self.__socios:
-            if socio["activo"] == True:
+            if socio.estado == "Activo":
                 activos = activos + 1
 
         porcentaje = (activos * 100) / len(self.__socios)
-
+        porcentaje = round(porcentaje, 2)
         print("El porcentaje de socios activos es:", porcentaje, "%")
         
-madrid = Clublosavengers("Madrid", "lugar amplio de 200 personas", "Malaga, España", "Messi", 2024)
+madrid = ClubCategoria("Madrid", "lugar amplio de 200 personas", "Malaga, España", "Messi", 2024)
 
 madrid.registrar_socio("isaias", True)
 madrid.registrar_socio("martin", True)
