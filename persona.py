@@ -11,14 +11,20 @@ class Persona:
     def get_tipo_identificacion(self):
             return self.__tipo_identificacion
     
-    def set_socios(self, __tipo_identificacion):
-        self.__tipo_identificacion = __tipo_identificacion
+    def set_tipo_identificacion(self, nuevo_tipo_identificacion):
+        self.__tipo_identificacion = nuevo_tipo_identificacion
         
     def get_identificacion(self):
         return self.__identificacion
+    
+    def set_identificacion(self, nueva_identificacion):
+        self.__identificacion = nueva_identificacion
         
     def get_nacionalidad(self):
         return self.__nacionalidad
+    
+    def set_nacionalidad(self, nueva_nacionalidad):
+        self.__nacionalidad = nueva_nacionalidad
         
     def es_mayor_de_edad(self):
         if self.edad >= 18:

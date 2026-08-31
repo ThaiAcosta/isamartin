@@ -1,12 +1,13 @@
 from datetime import date
+from persona import Persona
 
-class Socio:
-    def __init__(self, fecha_incripcion, estado, usuario, contrasenia, nombre):
+class Socio(Persona):
+    def __init__(self, fecha_incripcion, estado, usuario, contrasenia, nombre_completo, edad, tipo_identificacion, identificacion, nacionalidad):
+        super().__init__(nombre_completo, edad, tipo_identificacion, identificacion, nacionalidad)
         self.fecha_incripcion = fecha_incripcion
         self.estado = estado
         self.__usuario = usuario
         self.__contrasenia = contrasenia
-        self.nombre = nombre
         self.cuotas = []
         self.clubes = []
     
@@ -29,8 +30,11 @@ class Socio:
         print("Clubes del socio:", self.clubes)
         
     def eliminar_club(self, club):
-        self.clubes.remove(club)
-        print("se ha eliminado el club", club)
+        if club in self.clubes:
+            self.clubes.remove(club)
+            print("se ha eliminado el club", club)
+        else:
+            print("El club", club, "no está asociado a este socio")
          
     def evaluar_suspension(self):
         fecha_actual = date.today()
@@ -64,6 +68,10 @@ class Socio:
                 if cuota["estado"] == "Pendiente":
                     cuota["estado"] = "Pagada"
                     print("La cuota",numero, "fue pagada.")
+                else:
+                    print("La cuota", numero, "ya estaba pagada.")
+                return
+        print("La cuota", numero, "no existe.")
     
     def tiene_deudas(self):
         for cuota in self.cuotas:
@@ -104,7 +112,7 @@ class Socio:
             
 fecha_antigua = date(2023, 5, 15)
 
-socio1 = Socio(fecha_antigua, "Activo", "tio charly", "clave123")
+socio1 = Socio(fecha_antigua, "Activo", "tio charly", "clave123", "Carlos Rodríguez", 30, "DNI", "30111222", "Argentina")
 socio1.asociar_club("Malaga")
 socio1.asociar_club("Madrid")
 socio1.mostrar_clubes()
