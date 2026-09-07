@@ -27,14 +27,14 @@ class Socio(Persona):
         self.clubes.append(club)
         
     def mostrar_clubes(self):
-        print("Clubes del socio:", self.clubes)
+        return f'Clubes del socio: {self.clubes}'
         
     def eliminar_club(self, club):
         if club in self.clubes:
             self.clubes.remove(club)
-            print("se ha eliminado el club", club)
+            return f'se ha eliminado el club {club}'
         else:
-            print("El club", club, "no está asociado a este socio")
+            return f'El club {club} no está asociado a este socio'
          
     def evaluar_suspension(self):
         fecha_actual = date.today()
@@ -42,16 +42,16 @@ class Socio(Persona):
         
         if dias_transcurridos > 365:
             self.estado = "Suspendido"
-            print("El socio", self.__usuario, "ha sido SUSPENDIDO. Días desde inscripción:", dias_transcurridos)
+            return f'El socio {self.__usuario} ha sido SUSPENDIDO. Días desde inscripción: {dias_transcurridos}'
         else:
-            print("El socio", self.__usuario, "continúa ACTIVO. Días desde inscripción:", dias_transcurridos)
+            return f'El socio {self.__usuario} continúa ACTIVO. Días desde inscripción: {dias_transcurridos}'
             
     def reactivar_socio(self):
         if self.estado == "Suspendido":
             self.estado = "Activo"
-            print("El socio", self.__usuario, "ha sido reactivado.")
+            return f'El socio {self.__usuario} ha sido reactivado.'
         else:
-            print("El socio no está suspendido.")
+            return f'El socio no está suspendido.'
             
     def generar_cuota(self, numero, periodo, fecha_vencimiento):
         cuota = {
@@ -67,27 +67,23 @@ class Socio(Persona):
             if cuota["numero"] == numero:
                 if cuota["estado"] == "Pendiente":
                     cuota["estado"] = "Pagada"
-                    print("La cuota",numero, "fue pagada.")
+                    return f'La cuota {numero} fue pagada.'
                 else:
-                    print("La cuota", numero, "ya estaba pagada.")
-                return
-        print("La cuota", numero, "no existe.")
+                    return f'La cuota {numero} ya estaba pagada.'
+        return f' La cuota {numero} no existe.'
     
     def tiene_deudas(self):
         for cuota in self.cuotas:
             if cuota["estado"] == "Pendiente":
-                print("El socio tiene cuotas sin abonar.")
                 return True
-
-        print("El socio no tiene deudas.")
-        return False
+            else:
+                return False
         
     def mostrar_cuotas_pendientes(self):
         cantidad_pendientes = 0
         for cuota in self.cuotas:
             if cuota.get("estado") == "Pendiente":
                 cantidad_pendientes += 1
-        print("El socio", self.__usuario, "tiene", cantidad_pendientes, "cuota(s) pendiente(s) de pago.")
         return cantidad_pendientes
     
     def verificar_vencimiento_cuotas(self):
@@ -96,34 +92,14 @@ class Socio(Persona):
             if cuota.get("estado") == "Pendiente":
                 if cuota.get("fecha_vencimiento") != None:
                     if fecha_actual > cuota.get("fecha_vencimiento"):
-                        print("La cuota número", cuota.get("numero"), "está VENCIDA.")
+                        return f'La cuota número {cuota.get("numero")} está VENCIDA.'
                     else:
-                        print("La cuota número", cuota.get("numero"), "todavía no venció.")
+                        return f'La cuota número {cuota.get("numero")} todavía no venció.'
             else:
-                print("La cuota número", cuota.get("numero"), "ya está pagada.")
+                return f'La cuota número {cuota.get("numero")} ya está pagada'
             
     def verificar_acceso(self, usuario, contrasenia):
         if usuario == self.__usuario and contrasenia == self.__contrasenia:
-            print("Acceso correcto.")
             return True
         else:
-            print("Usuario o contraseña incorrectos.")
             return False
-            
-fecha_antigua = date(2023, 5, 15)
-
-socio1 = Socio(fecha_antigua, "Activo", "tio charly", "clave123", "Carlos Rodríguez", 30, "DNI", "30111222", "Argentina")
-socio1.asociar_club("Malaga")
-socio1.asociar_club("Madrid")
-socio1.mostrar_clubes()
-socio1.eliminar_club("Madrid")
-socio1.mostrar_clubes()
-socio1.generar_cuota(67, "Agosto", date(2026, 8, 10))
-socio1.generar_cuota(76, "Septiembre", date(2026, 9, 10))
-socio1.pagar_cuota(67)
-socio1.tiene_deudas()
-socio1.evaluar_suspension()
-socio1.mostrar_cuotas_pendientes()
-socio1.verificar_vencimiento_cuotas()
-socio1.verificar_acceso("tio charly", "clave123")
-socio1.reactivar_socio()
