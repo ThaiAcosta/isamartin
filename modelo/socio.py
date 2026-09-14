@@ -1,26 +1,27 @@
 from datetime import date
-from persona import Persona
+from modelo.persona import Persona
 
 class Socio(Persona):
-    def __init__(self, fecha_incripcion, estado, usuario, contrasenia, nombre_completo, edad, tipo_identificacion, identificacion, nacionalidad):
+    def __init__(self, nombre_completo, edad, tipo_identificacion, identificacion, nacionalidad, rol, fecha_inscripcion, estado, usuario, contrasenia):
         super().__init__(nombre_completo, edad, tipo_identificacion, identificacion, nacionalidad)
-        self.fecha_incripcion = fecha_incripcion
+        self.fecha_inscripcion = fecha_inscripcion
         self.estado = estado
+        self.rol = rol
         self.__usuario = usuario
         self.__contrasenia = contrasenia
         self.cuotas = []
         self.clubes = []
     
-    def get__usuario(self):
+    def get_usuario(self):
         return self.__usuario
     
-    def set__usuario(self, __usuario_nuevo):
+    def set_usuario(self, __usuario_nuevo):
         self.__usuario = __usuario_nuevo
 
-    def get__contrasenia(self):
+    def get_contrasenia(self):
         return self.__contrasenia
     
-    def set__contrasenia(self, __contrasenia_nueva):
+    def set_contrasenia(self, __contrasenia_nueva):
         self.__contrasenia = __contrasenia_nueva
         
     def asociar_club(self, club):
@@ -38,7 +39,7 @@ class Socio(Persona):
          
     def evaluar_suspension(self):
         fecha_actual = date.today()
-        dias_transcurridos = (fecha_actual - self.fecha_incripcion).days
+        dias_transcurridos = (fecha_actual - self.fecha_inscripcion).days
         
         if dias_transcurridos > 365:
             self.estado = "Suspendido"
@@ -100,6 +101,12 @@ class Socio(Persona):
             
     def verificar_acceso(self, usuario, contrasenia):
         if usuario == self.__usuario and contrasenia == self.__contrasenia:
+            return True
+        else:
+            return False
+        
+    def es_admin(self):
+        if self.rol == "admin":
             return True
         else:
             return False
