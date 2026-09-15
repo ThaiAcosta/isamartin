@@ -1,18 +1,18 @@
 from datetime import date
 class Cuota:
     def __init__(self,estado,fecha_vencimiento,periodo):
-        self.__estado = estado
+        self._estado = estado
         self.fecha_vencimiento =fecha_vencimiento
         self.periodo = periodo
         
-    def get__estado(self):
-        return self.__estado
+    def get_estado(self):
+        return self._estado
     
-    def set__estado(self, __estado_nuevo):
-        self.__estado = __estado_nuevo
+    def set_estado(self, __estado_nuevo):
+        self._estado = __estado_nuevo
         
     def registrar_cuota_pagada(self):
-        self.__estado = "Pagada"
+        self._estado = "Pagada"
         return f'La cuota de {self.periodo} se registro como pagada.'
         
     def verificar_vencimiento(self):
@@ -26,10 +26,10 @@ class Cuota:
         fecha_actual = date.today()
 
         if fecha_actual > self.fecha_vencimiento:
-            self.__estado = "Vencida"
+            self._estado = "Vencida"
             return f'La cuota de {self.periodo} se encuentra vencida.'
         else:
-            return f'La cuota de {self.periodo} sigue {self.__estado}'
+            return f'La cuota de {self.periodo} sigue {self._estado}'
             
     def dias_para_vencimiento(self):
         fecha_actual = date.today()
@@ -44,5 +44,5 @@ class Cuota:
     def renovar_cuota(self, nuevo_periodo, nueva_fecha_vencimiento):
         self.periodo = nuevo_periodo
         self.fecha_vencimiento = nueva_fecha_vencimiento
-        self.__estado = "Pendiente"
+        self._estado = "Pendiente"
         return f'La cuota fue renovada para el período {nuevo_periodo}'

@@ -22,6 +22,16 @@ def crear_tablas(conexion):
             contrasenia         TEXT NOT NULL
         )
     """)
+    
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS cuotas (
+            id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+            socio_id            INTEGER NOT NULL,
+            estado              TEXT DEFAULT 'Pendiente',
+            fecha_vencimiento   TEXT,
+            periodo             TEXT
+        )          
+    """)
     conexion.commit()
 
 def guardar_socio(conexion, socio):
@@ -38,9 +48,32 @@ def guardar_socio(conexion, socio):
         socio.get_identificacion(),
         socio.get_nacionalidad(),
         socio.rol,
-        socio.fecha_inscripcion,
+        socio.fecha_inscripcion.isoformat(),
         socio.estado,
         socio.get_usuario(),
         socio.get_contrasenia()
     ))
     conexion.commit()
+
+def guardar_cuota(conexion, usuario, cuota):
+    cursor = conexion.cursor()
+    cursor.execute("SELECT id FROM socios WHERE usuario = ?", (usuario,))
+    fila = cursor.fetchone()
+    if fila is None:
+        raise ValueError("El socio no existe")
+    
+    socio_id = fila[0]
+    cursor.execute("""
+        INSERT INTO cuotas (socio_id, estado, fecha_vencimiento, periodo)
+        VALUES (?, ?, ?, ?)
+    """,(
+        cuota.socio_id,
+        cuota.get_estado(),
+        cuota.fecha_vencimiento.isoformat(),
+        cuota.periodo
+    ))
+    conexion.commit()
+
+def listar_cuotas_de_socio(conexion, usuario):
+    """Devuelve una lista de objetos Cuota para el socio con ese usuario."""
+    cursor = conexion.cursor()
