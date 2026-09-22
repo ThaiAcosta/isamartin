@@ -54,7 +54,7 @@ crear_tablas(conexion)
 cuota_isa = Cuota(
     "Pendiente", date(2027, 2, 14), "Agosto" 
 )
-guardar_cuota(conexion, "isa", cuota_isa)
-listar_cuotas_de_socio(conexion, "isa")
+guardar_cuota(conexion, "isaa", cuota_isa)
+listar_cuotas_de_socio(conexion, "isaa")
 print("cuota guardada")
 conexion.close()

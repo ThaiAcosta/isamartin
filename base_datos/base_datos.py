@@ -36,6 +36,11 @@ def crear_tablas(conexion):
 
 def guardar_socio(conexion, socio):
     cursor = conexion.cursor()
+    cursor.execute("SELECT id FROM socios WHERE usuario = ?", (socio.get_usuario(),))
+    if cursor.fetchone() is not None:
+        print(f"El socio '{socio.get_usuario()}' ya existe, no se vuelve a insertar.")
+        return
+    
     cursor.execute("""
         INSERT INTO socios (nombre_completo, edad, tipo_identificacion,
                             identificacion, nacionalidad, rol,
@@ -67,7 +72,7 @@ def guardar_cuota(conexion, usuario, cuota):
         INSERT INTO cuotas (socio_id, estado, fecha_vencimiento, periodo)
         VALUES (?, ?, ?, ?)
     """,(
-        cuota.socio_id,
+        socio_id,
         cuota.get_estado(),
         cuota.fecha_vencimiento.isoformat(),
         cuota.periodo
