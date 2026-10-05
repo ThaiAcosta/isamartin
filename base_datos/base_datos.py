@@ -1,4 +1,6 @@
 import sqlite3
+from modelo.socio import Socio
+
 
 def conectar(ruta):
     
@@ -32,7 +34,31 @@ def crear_tablas(conexion):
             periodo             TEXT
         )          
     """)
+    
+    cursor.execute("""
+        CREATE TABLE IF NOT EXIST clubes (
+            id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre              TEXT, 
+            descripcion         TEXT, 
+            ubicacion           TEXT, 
+            presidente          TEXT, 
+            fecha_fundacion     TEXT
+        )
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS actividades (
+        
+        )
+    """)
+    
     conexion.commit()
+    
+    
+def _objeto_socio(fila):
+    (_id, nombre_completo, edad, tipo_identificacion, identificacion, nacionalidad, rol, fecha_inscripcion, estado, usuario, contrasenia) = fila
+    return Socio(nombre_completo, edad, tipo_identificacion, identificacion, nacionalidad, rol, fecha_inscripcion, estado, usuario, contrasenia)
+
 
 def guardar_socio(conexion, socio):
     cursor = conexion.cursor()
@@ -82,3 +108,11 @@ def guardar_cuota(conexion, usuario, cuota):
 def listar_cuotas_de_socio(conexion, usuario):
     """Devuelve una lista de objetos Cuota para el socio con ese usuario."""
     cursor = conexion.cursor()
+    
+def buscar_socio_por_usuario(conexion, usuario):
+    cursor = conexion.cursor()
+    cursor.execute("SELECT nombre, apellido FROM socios WHERE usuario = ?", (usuario,))
+    fila = cursor.fetchone()
+    if fila is None:
+        return None
+    return _objeto_socio(fila)

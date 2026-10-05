@@ -16,10 +16,10 @@ crear_tablas(conexion)
 # guardar_socio(conexion, carlos)
 # print("Otro socio guardado.")
 
-# isa = Socio(
-#     "Isaias Acosta ", 16, "DNI", "55555555", "Argentina",
-#     "admin", date(2024, 10, 1), "Activo", "isaa", "zelly"
-# )
+isa = Socio(
+    "Isaias Acosta ", 16, "DNI", "55555555", "Argentina",
+    "admin", date(2024, 10, 1), "Activo", "isaa", "zelly"
+)
 # guardar_socio(conexion, isa)
 # print("Otro socio guardado.")
 
@@ -51,10 +51,12 @@ crear_tablas(conexion)
 # guardar_socio(conexion, mari)
 # print("Otro socio guardado.")
 
-cuota_isa = Cuota(
-    "Pendiente", date(2027, 2, 14), "Agosto" 
-)
-guardar_cuota(conexion, "isaa", cuota_isa)
-listar_cuotas_de_socio(conexion, "isaa")
-print("cuota guardada")
-conexion.close()
+# cuota_isa = Cuota(
+#     "Pendiente", date(2027, 2, 14), "Agosto" 
+# )
+# guardar_cuota(conexion, "isaa", cuota_isa)
+# listar_cuotas_de_socio(conexion, "isaa")
+# print("cuota guardada")
+# conexion.close()
+
+buscar_socio_por_usuario()
