@@ -48,12 +48,58 @@ def crear_tablas(conexion):
 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS actividades (
-        
+            id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre              TEXT,
+            dia                 TEXT,
+            horario             DATETIME
         )
     """)
     
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS socio_actividad (
+            socio_id     INTEGER,
+            actividad_id INTEGER,
+            PRIMARY KEY (socio_id, actividad_id),
+            FOREIGN KEY (socio_id) REFERENCES socios(id),
+            FOREIGN KEY (actividad_id) REFERENCES actividades(id)
+        )
+    """)
+
     conexion.commit()
     
+def guardar_club(conexion, club):
+    cursor = conexion.cursor()
+    cursor.execute("SELECT id FROM clubes WHERE nombre = ?", (club,))
+    fila = cursor.fetchnone()
+    if fila is None:
+        return f'El club {club.nombre()} ya existe, no se vuelve a insertar.'
+    
+    cursor.execute("""
+        INSERT INTO clubes (nombre, descripcion, ubicacion, presidente, fecha_fundacion)
+        VALUES (?, ?, ?, ?, ?)
+    """, (
+        club.nombre,
+        club.descripcion,
+        club.ubicacion,
+        club.presidente,
+        club.fecha_fundacion
+    ))
+    
+def guardar_actividad(conexion, actividad):
+    cursor = conexion.cursor()
+    cursor.execute("SELECT id FROM clubes WHERE nombre = ?", (actividad,))
+    fila = cursor.fetchone()
+    if fila is None:
+        return f'La actividad {actividad.nombre()} ya existe, no se vuelve a insertar.'
+           
+    cursor.execute("""
+        INSERT INTO actividades (nombre, dia, horario)
+        VALUES (?, ?, ?)
+    """, (
+        actividad.nombre,
+        actividad.dia,
+        actividad.horario
+    ))
     
 def _objeto_socio(fila):
     (_id, nombre_completo, edad, tipo_identificacion, identificacion, nacionalidad, rol, fecha_inscripcion, estado, usuario, contrasenia) = fila
@@ -63,9 +109,9 @@ def _objeto_socio(fila):
 def guardar_socio(conexion, socio):
     cursor = conexion.cursor()
     cursor.execute("SELECT id FROM socios WHERE usuario = ?", (socio.get_usuario(),))
-    if cursor.fetchone() is not None:
-        print(f"El socio '{socio.get_usuario()}' ya existe, no se vuelve a insertar.")
-        return
+    fila = cursor.fetchone()
+    if fila is None:
+        return f'El socio {socio.get_usuario()} ya existe, no se vuelve a insertar.'
     
     cursor.execute("""
         INSERT INTO socios (nombre_completo, edad, tipo_identificacion,
@@ -75,12 +121,6 @@ def guardar_socio(conexion, socio):
     """, (
         socio.nombre_completo,
         socio.edad,
-        socio.get_tipo_identificacion(),
-        socio.get_identificacion(),
-        socio.get_nacionalidad(),
-        socio.rol,
-        socio.fecha_inscripcion.isoformat(),
-        socio.estado,
         socio.get_usuario(),
         socio.get_contrasenia()
     ))
@@ -103,15 +143,27 @@ def guardar_cuota(conexion, usuario, cuota):
         cuota.fecha_vencimiento.isoformat(),
         cuota.periodo
     ))
+    
+    cursor.execute("""
+        INSERT INTO clubes ()
+        VALUES (?, ?, ?, ?)
+    """,(
+        socio_id,
+        cuota.get_estado(),
+        cuota.fecha_vencimiento.isoformat(),
+        cuota.periodo
+    ))
     conexion.commit()
 
 def listar_cuotas_de_socio(conexion, usuario):
     """Devuelve una lista de objetos Cuota para el socio con ese usuario."""
     cursor = conexion.cursor()
+    cursor.execute("SELECT * FROM cuotas WHERE usuario = ?", (usuario))
+    fila = cursor.fetchnone()
     
 def buscar_socio_por_usuario(conexion, usuario):
     cursor = conexion.cursor()
-    cursor.execute("SELECT nombre, apellido FROM socios WHERE usuario = ?", (usuario,))
+    cursor.execute("SELECT nombre, apellido FROM socios WHERE usuario = ?", (usuario))
     fila = cursor.fetchone()
     if fila is None:
         return None
