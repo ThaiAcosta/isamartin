@@ -8,6 +8,9 @@ class Club:
         self.descripcion = descripcion
         self.ubicacion = ubicacion
         
+    def get_nombre(self):
+        return self.nombre
+        
     def mostrar_info(self):
         return f'el nombre de mi club es {self.nombre} y es un lugar {self.descripcion} nos ubicamos en {self.ubicacion} nuestro presidente es {self.__presidente} y nos fundamos en {self.__fecha_fundacion}'  
         

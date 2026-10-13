@@ -1,6 +1,6 @@
 from datetime import date
 
-class Club:
+class Actividad:
     def __init__(self, nombre, dia, horario):
         self.nombre = nombre
         self.dia = dia
