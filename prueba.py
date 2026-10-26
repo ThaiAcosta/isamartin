@@ -6,6 +6,7 @@ from modelo.cuota import Cuota
 from modelo.club import Club
 from modelo.actividad import Actividad
 from modelo.socio import Socio
+from servicios.servicio_autenticacion import autenticar
 
 RUTA = Path(__file__).parent / "club.db"
 
@@ -28,3 +29,5 @@ print(listar_actividades_de_socio(conexion, "isa"))
 print(desanotar_socio_actividad(conexion, "isa", "bailar"))
 print(listar_actividades_de_socio(conexion, "isa"))
 print(obtener_club(conexion))
+autenticar("isaa", "zelly")
+print("los atributos de isa son", socio)

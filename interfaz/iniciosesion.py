@@ -17,36 +17,44 @@ ventana.resizable(False, False)
 titulo = tk.Label(ventana, text=club.get_nombre(), font=("Arial", 24))
 titulo.pack(pady=20)
 
-
+texto_usuario = tk.Label(ventana, text="Ingrese su usuario")
+texto_usuario.pack()
 ingreso_usuario = tk.Entry(ventana)
 ingreso_usuario.pack()
 
 #Si el usuario escribe 1234, en pantalla ve ****. Con ingreso_contrasenia.get() seguimos recibiendo 1234, el texto verdadero, y por eso se puede comparar con la contraseña guardada.
 #Sin el show, la contraseña se vería tal cual la escribís, como en el código del año pasado.
+texto_contrasenia = tk.Label(ventana, text="Ingrese su contraseña")
+texto_contrasenia.pack()
 ingreso_contrasenia = tk.Entry(ventana, show="*")
 ingreso_contrasenia.pack()
 
-#Button crea el botón. bg es el color de fondo. command=ingresar dice qué función se ejecuta al hacer click. Va sin paréntesis porque le pasamos la función para que la llame tkinter cuando haga falta. Con paréntesis se ejecutaría al crear el botón.
-boton = tk.Button(ventana, text="Ingresar", bg="green", command=ingresar)
+def ingresar():
+    usuario = ingreso_usuario.get()
+    contrasenia = ingreso_contrasenia.get()
 
-mensaje = tk.Label(ventana, text="")
+    #Va a la base de datos, busca un socio con ese usuario y devuelve un objeto Socio o None.
+    socio = buscar_socio_por_usuario(conexion, usuario)
 
-usuario = ingreso_usuario.get()
-contrasenia = ingreso_contrasenia.get()
-
-#Va a la base de datos, busca un socio con ese usuario y devuelve un objeto Socio o None.
-socio = buscar_socio_por_usuario(conexion, usuario)
-
-#Si devolvió None, el usuario no existe. Esta comprobación va primero, porque si socio es None no podemos llamar métodos sobre él.
-#config(...) cambia las propiedades de un widget que ya existe. fg es el color del texto.
-if socio is None:
-    mensaje.config(text="Error: el usuario no existe", fg="red")
-    
-elif socio.verificar_acceso(usuario, contrasenia):
-    if socio.es_admin():
+    #Si devolvió None, el usuario no existe. Esta comprobación va primero, porque si socio es None no podemos llamar métodos sobre él.
+    #config(...) cambia las propiedades de un widget que ya existe. fg es el color del texto.
+    if usuario == "" or contrasenia == "":
+        mensaje.config(text="Completá usuario y contraseña", fg="red")
+    elif socio is None:
+        mensaje.config(text="Error: el usuario no existe", fg="red")
+    elif not socio.verificar_acceso(usuario, contrasenia):
+        mensaje.config(text="Error: contraseña o usuario incorrecto", fg="red")
+    elif socio.es_admin():
         mensaje.config(text="Hola " + usuario + ", ingresaste como administrador", fg="green")
     else:
-        mensaje.config(text="Error: contraseña incorrecta", fg="red")
-    
+        mensaje.config(text="Hola " + usuario + ", ingresaste como socio", fg="green")
+
+#Button crea el botón. bg es el color de fondo. command=ingresar dice qué función se ejecuta al hacer click. Va sin paréntesis porque le pasamos la función para que la llame tkinter cuando haga falta. Con paréntesis se ejecutaría al crear el botón.
+boton = tk.Button(ventana, text="Ingresar", bg="green", command=ingresar)
+boton.pack(pady=10)
+
+mensaje = tk.Label(ventana, text="")
+mensaje.pack()
+
 ventana.mainloop()
 conexion.close()
